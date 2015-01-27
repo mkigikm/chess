@@ -36,13 +36,13 @@ class SlidingPiece < Piece
 
     @deltas.each do |delta|
       (1..7).each do |multiple|
-        new_pos = [pos[0] + delta[0] * multiple, pos[1] + delta[1] * multiple]
+        new_pos = [pos[0] + delta[0] * multiple,
+                   pos[1] + delta[1] * multiple]
         if valid?(new_pos)
           new_poses << new_pos
-
-          if @board.occupied?(new_pos)
-            break
-          end
+        end
+        if !@board.in_bounds?(new_pos) || @board.occupied?(new_pos)
+          break
         end
       end
     end

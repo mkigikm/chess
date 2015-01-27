@@ -127,8 +127,12 @@ class Board
     board_str
   end
 
+  def all_pieces
+    @grid.flatten.compact
+  end
+
   def in_check?(color)
-    pieces = @grid.flatten.compact
+    pieces = all_pieces
 
     king = pieces.find do |piece|
       piece.type == :king && piece.color == color
@@ -138,4 +142,15 @@ class Board
       piece.color != color && piece.moves.include?(king.pos)
     end
   end
+
+  def checkmate?(color)
+    pieces = all_pieces.select { |piece| piece.color == color}
+
+
+    pieces.all? do |piece|
+      piece.valid_moves.empty?
+    end
+  end
+
+
 end
