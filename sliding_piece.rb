@@ -9,10 +9,26 @@ class SlidingPiece < Piece
     rook: [[1, 0], [0, 1], [-1, 0], [0, -1]]
   }
 
+  attr_reader :render
+
   def initialize(color, pos, type)
     super(color, pos)
 
     @deltas = DELTAS[type]
+
+    if type == :queen && color == :white
+      @render = "♕"
+    elsif type == :queen && color == :black
+      @render = "♛"
+    elsif type == :bishop && color == :white
+      @render = "♗"
+    elsif type == :bishop && color == :black
+      @render = "♝"
+    elsif type == :rook && color == :white
+      @render = "♖"
+    else
+      @render = "♜"
+    end
   end
 
   def moves

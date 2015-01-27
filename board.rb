@@ -23,7 +23,11 @@ class Board
   end
 
   def occupied?(pos)
-    !(self[pos].nil?)
+    !self[pos].nil?
+  end
+
+  def occupied_by_other_color?(pos, color)
+    !self[pos].nil? && self[pos].color != color
   end
 
   def move(start, end_pos)
@@ -33,6 +37,9 @@ class Board
       self[start] = nil
       self[end_pos] = piece
       piece.pos = end_pos
+      if piece.class == Pawn
+        piece.can_move_twice = false
+      end
     else
       raise ArgumentError.new("Can't move there")
     end
@@ -49,7 +56,7 @@ class Board
         if piece.nil?
           board_str << "."
         else
-          board_str << (piece.color == :white ? "w" : "b")
+          board_str << piece.render
         end
       end
       board_str << "\n"

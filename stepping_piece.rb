@@ -1,8 +1,10 @@
+# encoding: utf-8
+
 require_relative 'piece.rb'
 require 'byebug'
 
 class SteppingPiece < Piece
-  
+
   DELTAS = {
     king: [[0, 1], [1, 0], [0, -1], [-1, 0],
     [1, 1], [1, -1], [-1, -1], [-1, 1]],
@@ -10,10 +12,21 @@ class SteppingPiece < Piece
     [-2, 1], [-2, -1], [-1, 2], [-1, -2]]
   }
 
+  attr_reader :render
+
   def initialize(color, pos, type)
     super(color, pos)
 
     @deltas = DELTAS[type]
+    if type == :king && color == :white
+      @render = "♔"
+    elsif type == :king && color == :black
+      @render = "♚"
+    elsif type == :knight && color == :white
+      @render = "♘"
+    else
+      @render = "♞"
+    end
   end
 
   def moves
@@ -32,5 +45,8 @@ class SteppingPiece < Piece
   def valid?(pos)
     @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
   end
+
+  def render
+    if
 
 end
