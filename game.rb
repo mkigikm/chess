@@ -16,8 +16,9 @@ class Game
         input = gets.chomp.split(', ')
 
         @board.user_move(input[0], input[1], @turn)
-      rescue
-        puts "You did it wrong"
+      rescue ArgumentError => e
+        puts "You did it wrong."
+        puts "Error was: #{e.message}"
         retry
       end
       @turn = @turn == :white ? :black : :white

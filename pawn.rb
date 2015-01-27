@@ -16,8 +16,8 @@ class Pawn < Piece
   attr_reader :render
   attr_accessor :can_move_twice
 
-  def initialize(color, pos)
-    super(color, pos, :pawn)
+  def initialize(color, pos, board)
+    super(color, pos, :pawn, board)
 
     @delta = DELTA[color]
     @attacks = ATTACK_DELTAS[color]
@@ -43,13 +43,14 @@ class Pawn < Piece
 
     @attacks.each do |attack|
       attack_pos = [self.pos[0] + attack[0], self.pos[1] + attack[1]]
-      new_poses << attack_pos if valid?(attack_pos)
+      new_poses << attack_pos if attacking_valid?(attack_pos)
     end
 
     new_poses
   end
 
-  def valid?(pos)
+  def attacking_valid?(pos)
     @board.in_bounds?(pos) && @board.occupied_by_other_color?(pos, color)
   end
+
 end

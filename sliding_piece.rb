@@ -11,7 +11,7 @@ class SlidingPiece < Piece
 
   attr_reader :render
 
-  def initialize(color, pos, type)
+  def initialize(color, pos, type, board)
     super
 
     @deltas = DELTAS[type]

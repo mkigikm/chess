@@ -1,4 +1,3 @@
-require 'byebug'
 require_relative 'piece.rb'
 require_relative 'sliding_piece.rb'
 require_relative 'stepping_piece.rb'
@@ -22,19 +21,19 @@ class Board
     board = Board.new
 
     [[:white, 7], [:black, 0]].each do |(color, row)|
-      SlidingPiece.new(color,  [row, 0], :rook).place(board)
-      SlidingPiece.new(color,  [row, 7], :rook).place(board)
-      SteppingPiece.new(color, [row, 1], :knight).place(board)
-      SteppingPiece.new(color, [row, 6], :knight).place(board)
-      SlidingPiece.new(color,  [row, 2], :bishop).place(board)
-      SlidingPiece.new(color,  [row, 5], :bishop).place(board)
-      SlidingPiece.new(color,  [row, 3], :queen).place(board)
-      SteppingPiece.new(color, [row, 4], :king).place(board)
+      SlidingPiece.new(color,  [row, 0], :rook, board)
+      SlidingPiece.new(color,  [row, 7], :rook, board)
+      SteppingPiece.new(color, [row, 1], :knight, board)
+      SteppingPiece.new(color, [row, 6], :knight, board)
+      SlidingPiece.new(color,  [row, 2], :bishop, board)
+      SlidingPiece.new(color,  [row, 5], :bishop, board)
+      SlidingPiece.new(color,  [row, 3], :queen, board)
+      SteppingPiece.new(color, [row, 4], :king, board)
     end
 
     8.times do |col|
-      Pawn.new(:black, [1, col]).place(board)
-      Pawn.new(:white, [6, col]).place(board)
+      Pawn.new(:black, [1, col], board)
+      Pawn.new(:white, [6, col], board)
     end
 
     board
@@ -44,7 +43,7 @@ class Board
     if !(/^[a-h][1-8]$/ =~ pos)
       raise ArgumentError.new("Invalid coordinates")
     end
-    
+
     row = 8 - pos[1].to_i
     col = COLUMN_TRANSLATION[pos[0]]
 
@@ -54,7 +53,7 @@ class Board
   attr_reader :grid
 
   def initialize
-    @grid = Array.new(8) { Array.new(8) {nil}}
+    @grid = Array.new(8) { Array.new(8) }
   end
 
   def []=(pos, piece)
@@ -66,11 +65,11 @@ class Board
   end
 
   def in_bounds?(pos)
-    pos[0].between?(0, 7) && pos[1].between?(0,7)
+    pos.all? { |i| i.between?(0,7) }
   end
 
   def can_move_into?(color, pos)
-    self[pos].nil? || self[pos].color != color
+    !occupied?(pos) || self[pos].color != color
   end
 
   def occupied?(pos)
@@ -91,16 +90,14 @@ class Board
   end
 
   def move(start, end_pos)
-    #debugger
+
     piece = self[start]
 
     raise ArgumentError.new("No piece there") if piece.nil?
     if piece.valid_moves.include?(end_pos)
-      self[start] = nil
-      self[end_pos] = piece
-      piece.pos = end_pos
+      move!(start, end_pos)
 
-      if piece.class == Pawn
+      if piece.is_a?(Pawn)
         piece.can_move_twice = false
       end
     else
@@ -117,9 +114,11 @@ class Board
   end
 
   def inspect
-    board_str = ""
+    board_str = " abcdefgh\n"
 
     8.times do |row|
+      board_str << (8 - row).to_s
+
       8.times do |col|
         piece = self[[row, col]]
         if piece.nil?
@@ -129,9 +128,10 @@ class Board
         end
       end
 
-      board_str << "\n"
+      board_str << "#{8 - row}\n"
     end
 
+    board_str << " abcdefgh\n"
     board_str
   end
 

@@ -6,13 +6,10 @@ class Piece
   attr_reader :color, :type
   attr_accessor :pos
 
-  def initialize(color, pos, type)
+  def initialize(color, pos, type, board)
     @color = color
     @pos = pos
     @type = type
-  end
-
-  def place(board)
     @board = board
     board[@pos] = self
   end
