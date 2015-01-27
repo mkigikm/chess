@@ -19,6 +19,11 @@ class Piece
     raise NotImplementedError
   end
 
+  def valid_moves
+    moves.reject { |pos| move_into_check?(pos) }
+  end
+  
+  protected
   def move_into_check?(pos)
     board_dup = board.dup
 
@@ -29,10 +34,4 @@ class Piece
   def valid?(pos)
     @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
   end
-
-  def valid_moves
-    moves.reject { |pos| move_into_check?(pos) }
-  end
-
-
 end

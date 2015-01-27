@@ -6,7 +6,6 @@ require_relative 'stepping_piece.rb'
 require_relative 'pawn.rb'
 
 class Board
-
   COLUMN_TRANSLATION = {
     'a' => 0,
     'b' => 1,
@@ -17,7 +16,6 @@ class Board
     'g' => 6,
     'h' => 7
   }
-
 
   def self.standard_board
     board = Board.new
@@ -66,22 +64,6 @@ class Board
     @grid[pos[0]][pos[1]]
   end
 
-  def in_bounds?(pos)
-    pos.all? { |i| i.between?(0,7) }
-  end
-
-  def can_move_into?(color, pos)
-    !occupied?(pos) || self[pos].color != color
-  end
-
-  def occupied?(pos)
-    !self[pos].nil?
-  end
-
-  def occupied_by_other_color?(pos, color)
-    !self[pos].nil? && self[pos].color != color
-  end
-
   def user_move(start, end_pos, turn_color)
     start, end_pos = Board.translate(start), Board.translate(end_pos)
     if self[start].color != turn_color
@@ -91,8 +73,13 @@ class Board
     move(start, end_pos)
   end
 
-  def move(start, end_pos)
+  def move!(start, end_pos)
+    self[end_pos] = self[start]
+    self[start] = nil
+    self[end_pos].pos = end_pos
+  end
 
+  def move(start, end_pos)
     piece = self[start]
 
     raise ArgumentError.new("No piece there") if piece.nil?
@@ -119,12 +106,6 @@ class Board
     end
 
     duped
-  end
-
-  def move!(start, end_pos)
-    self[end_pos] = self[start]
-    self[start] = nil
-    self[end_pos].pos = end_pos
   end
 
   def inspect
@@ -154,10 +135,6 @@ class Board
     board_str
   end
 
-  def all_pieces
-    @grid.flatten.compact
-  end
-
   def in_check?(color)
     pieces = all_pieces
 
@@ -183,4 +160,25 @@ class Board
     over?(color) && in_check?(color)
   end
 
+  # used by the Piece class
+  def in_bounds?(pos)
+    pos.all? { |i| i.between?(0,7) }
+  end
+
+  def can_move_into?(color, pos)
+    !occupied?(pos) || self[pos].color != color
+  end
+
+  def occupied?(pos)
+    !self[pos].nil?
+  end
+
+  def occupied_by_other_color?(pos, color)
+    !self[pos].nil? && self[pos].color != color
+  end
+
+  protected
+  def all_pieces
+    @grid.flatten.compact
+  end
 end

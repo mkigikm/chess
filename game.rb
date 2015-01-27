@@ -30,7 +30,13 @@ class Game
       @turn = @turn == :white ? :black : :white
     end
 
-    puts "(ノ ゜Д゜)ノ ︵ ┻━┻ ."
+    if @board.checkmate?(:white)
+      puts "This is the white player (ノ ゜Д゜)ノ ︵ ┻━┻ ."
+    elsif @board.checkmate?(:black)
+      puts "This is the black player (ノ ゜Д゜)ノ ︵ ┻━┻ ."
+    else
+      puts "wow, a tie"
+    end
   end
 
 end

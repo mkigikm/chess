@@ -50,6 +50,7 @@ class Pawn < Piece
     new_poses
   end
 
+  protected
   def attacking_valid?(pos)
     @board.in_bounds?(pos) && @board.occupied_by_other_color?(pos, color)
   end
