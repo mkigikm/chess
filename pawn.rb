@@ -17,7 +17,7 @@ class Pawn < Piece
   attr_accessor :can_move_twice
 
   def initialize(color, pos)
-    super
+    super(color, pos, :pawn)
 
     @delta = DELTA[color]
     @attacks = ATTACK_DELTAS[color]

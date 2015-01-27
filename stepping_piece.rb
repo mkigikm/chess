@@ -15,7 +15,7 @@ class SteppingPiece < Piece
   attr_reader :render
 
   def initialize(color, pos, type)
-    super(color, pos)
+    super
 
     @deltas = DELTAS[type]
     if type == :king && color == :white

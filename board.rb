@@ -88,4 +88,16 @@ class Board
 
     board_str
   end
+
+  def in_check?(color)
+    pieces = @grid.flatten
+
+    king = pieces.find do |piece|
+      piece.type == :king && piece.color == color
+    end
+
+    pieces.any? do |piece|
+      piece.color != color && piece.moves.include?(king.pos)
+    end
+  end
 end
