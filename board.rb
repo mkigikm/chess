@@ -4,6 +4,7 @@ require_relative 'piece.rb'
 require_relative 'sliding_piece.rb'
 require_relative 'stepping_piece.rb'
 require_relative 'pawn.rb'
+require_relative 'chess_error'
 
 class Board
   COLUMN_TRANSLATION = {
@@ -41,7 +42,7 @@ class Board
 
   def self.translate(pos)
     if !(/^[a-h][1-8]$/ =~ pos)
-      raise ArgumentError.new("Invalid coordinates")
+      raise ChessError.new("Invalid coordinates")
     end
 
     row = 8 - pos[1].to_i
@@ -67,7 +68,7 @@ class Board
   def user_move(start, end_pos, turn_color)
     start, end_pos = Board.translate(start), Board.translate(end_pos)
     if self[start].color != turn_color
-      raise ArgumentError.new("Not your piece.")
+      raise ChessError.new("Not your piece.")
     end
 
     move(start, end_pos)
@@ -82,7 +83,7 @@ class Board
   def move(start, end_pos)
     piece = self[start]
 
-    raise ArgumentError.new("No piece there") if piece.nil?
+    raise ChessError.new("No piece there") if piece.nil?
     if piece.valid_moves.include?(end_pos)
       move!(start, end_pos)
 
@@ -90,7 +91,7 @@ class Board
         piece.can_move_twice = false
       end
     else
-      raise ArgumentError.new("Can't move there")
+      raise ChessError.new("Can't move there")
     end
 
     nil

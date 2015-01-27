@@ -1,0 +1,3 @@
+class ChessError < ArgumentError
+
+end
