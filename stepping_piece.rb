@@ -32,7 +32,7 @@ class SteppingPiece < Piece
   def moves
     new_poses = []
 
-    possible_pos = @deltas.collect do |delta|
+    @deltas.each do |delta|
       new_pos = [pos[0] + delta[0], pos[1] + delta[1]]
       if valid?(new_pos)
         new_poses << new_pos

@@ -2,6 +2,28 @@ class Board
 
   attr_reader :grid
 
+  def self.standard_board
+    board = Board.new
+
+    [[:white, 7], [:black, 0]].each do |(color, row)|
+      SlidingPiece.new(color,  [row, 0], :rook).place(board)
+      SlidingPiece.new(color,  [row, 7], :rook).place(board)
+      SteppingPiece.new(color, [row, 1], :knight).place(board)
+      SteppingPiece.new(color, [row, 6], :knight).place(board)
+      SlidingPiece.new(color,  [row, 2], :bishop).place(board)
+      SlidingPiece.new(color,  [row, 5], :bishop).place(board)
+      SlidingPiece.new(color,  [row, 3], :queen).place(board)
+      SteppingPiece.new(color, [row, 4], :king).place(board)
+    end
+
+    8.times do |col|
+      Pawn.new(:black, [1, col]).place(board)
+      Pawn.new(:white, [6, col]).place(board)
+    end
+
+    board
+  end
+
   def initialize
     @grid = Array.new(8) { Array.new(8) {nil}}
   end
@@ -60,7 +82,7 @@ class Board
           board_str << piece.render
         end
       end
-      
+
       board_str << "\n"
     end
 

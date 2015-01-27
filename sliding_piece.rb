@@ -34,7 +34,7 @@ class SlidingPiece < Piece
   def moves
     new_poses = []
 
-    possible_pos = @deltas.collect do |delta|
+    @deltas.each do |delta|
       (1..7).each do |multiple|
         new_pos = [pos[0] + delta[0] * multiple, pos[1] + delta[1] * multiple]
         if valid?(new_pos)
