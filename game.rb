@@ -6,6 +6,7 @@ require_relative 'sliding_piece.rb'
 require_relative 'stepping_piece.rb'
 require_relative 'pawn.rb'
 require_relative 'human.rb'
+require_relative 'computer.rb'
 require_relative 'chess_error.rb'
 
 
@@ -18,7 +19,9 @@ class Game
     @white_player = white_player
     @black_player = black_player
     @white_player.board = @board
+    @white_player.color = :white
     @black_player.board = @board
+    @black_player.color = :black
   end
 
   def run
@@ -49,7 +52,20 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  human1 = Human.new
-  human2 = Human.new
-  Game.new(human1, human2).run
+  puts 'Is white player a human?'
+  input = gets.chomp.downcase
+  if input[0] == 'y'
+    player1 = Human.new
+  else
+    player1 = Computer.new
+  end
+
+  puts 'Is black player a human?'
+  input = gets.chomp.downcase
+  if input[0] == 'y'
+    player2 = Human.new
+  else
+    player2 = Computer.new
+  end
+  Game.new(player1, player2).run
 end

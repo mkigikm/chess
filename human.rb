@@ -1,7 +1,7 @@
 require_relative 'board'
 
 class Human
-  attr_accessor :board
+  attr_accessor :board, :color
 
   def get_move
     puts "Please enter your move: (in the form of f2, f3)"

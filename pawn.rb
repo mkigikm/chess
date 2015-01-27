@@ -31,13 +31,20 @@ class Pawn < Piece
     end
   end
 
+  def can_move_twice?
+    (color == :black && pos[0] == 1) ||
+      (color == :white && pos[1] == 1)
+  end
+
   def moves
     new_poses = []
+
+    return [] if pos[0] == 0 || pos[0] == 7
 
     forward_pos = [self.pos[0] + @delta[0], self.pos[1] + @delta[1]]
     new_poses << forward_pos if !@board.occupied?(forward_pos)
 
-    if !@board.occupied?(forward_pos) && @can_move_twice
+    if can_move_twice? && !@board.occupied?(forward_pos)
       double_pos = [self.pos[0] + @delta[0] * 2, self.pos[1] + @delta[1]]
       new_poses << double_pos if !@board.occupied?(double_pos)
     end

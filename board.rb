@@ -40,6 +40,35 @@ class Board
     board
   end
 
+  def self.load_board(board_file)
+    board_str = File.read(board_file)
+    rows = board_str.split("\n")
+    board = Board.new
+
+    1.upto(8) do |row|
+      1.upto(8) do |col|
+        char = rows[row][col]
+        pos = [row - 1, col - 1]
+        case char
+        when "♙" then Pawn.new(:white, pos, board)
+        when "♟" then Pawn.new(:black, pos, board)
+        when "♞" then SteppingPiece.new(:black, pos, :knight, board)
+        when "♘" then SteppingPiece.new(:white, pos, :knight, board)
+        when "♚" then SteppingPiece.new(:black, pos, :king, board)
+        when "♔" then SteppingPiece.new(:white, pos, :king, board)
+        when "♕" then SlidingPiece.new(:white,  pos, :queen, board)
+        when "♛" then SlidingPiece.new(:black,  pos, :queen, board)
+        when "♖" then SlidingPiece.new(:white,  pos, :rook, board)
+        when "♜" then SlidingPiece.new(:black,  pos, :rook, board)
+        when "♗" then SlidingPiece.new(:white,  pos, :bishop, board)
+        when "♝" then SlidingPiece.new(:black,  pos, :bishop, board)
+        end
+      end
+    end
+
+    board
+  end
+
   def self.translate(pos)
     if !(/^[a-h][1-8]$/ =~ pos)
       raise ChessError.new("Invalid coordinates")
@@ -121,9 +150,9 @@ class Board
       8.times do |col|
         piece = self[[row, col]]
         if piece.nil?
-          board_str << "   ".colorize(:background => bgcolor)
+          board_str << " ".colorize(:background => bgcolor)
         else
-          board_str << " #{piece.render} ".colorize(:background => bgcolor)
+          board_str << "#{piece.render}".colorize(:background => bgcolor)
         end
 
         bgcolor = bgcolor == :white ? :light_red : :white
@@ -132,7 +161,7 @@ class Board
       board_str << "#{8 - row}\n"
     end
 
-    board_str << "  a  b  c  d  e  f  g  h\n"
+    board_str << "  a  b  c  d  e  f  g  h"
     board_str
   end
 
@@ -178,7 +207,6 @@ class Board
     !self[pos].nil? && self[pos].color != color
   end
 
-  protected
   def all_pieces
     @grid.flatten.compact
   end

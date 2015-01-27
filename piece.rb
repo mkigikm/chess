@@ -1,6 +1,5 @@
 # encoding: utf-8
-
-require_relative 'board.rb'
+#require 'yaml'
 
 class Piece
 
@@ -22,10 +21,11 @@ class Piece
   def valid_moves
     moves.reject { |pos| move_into_check?(pos) }
   end
-  
+
   protected
   def move_into_check?(pos)
     board_dup = board.dup
+    #board_dup = YAML::load(@board.to_yaml)
 
     board_dup.move!(@pos, pos)
     board_dup.in_check?(color)
