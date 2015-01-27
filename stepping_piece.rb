@@ -1,4 +1,5 @@
 require_relative 'piece.rb'
+require 'byebug'
 
 class SteppingPiece < Piece
   DELTAS = {
@@ -16,12 +17,19 @@ class SteppingPiece < Piece
 
   def moves
     new_poses = []
-
+    
     possible_pos = @deltas.collect do |delta|
       new_pos = [pos[0] + delta[0], pos[1] + delta[1]]
-      new_poses << new_pos if @board.in_bounds?(new_pos)
+      if valid?(new_pos)
+        new_poses << new_pos
+      end
     end
 
     new_poses
   end
+
+  def valid?(pos)
+    @board.in_bounds?(pos) && !@board.occupied?(pos)
+  end
+
 end
