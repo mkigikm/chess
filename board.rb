@@ -22,6 +22,10 @@ class Board
     self[pos].nil? || self[pos].color != color
   end
 
+  def occupied?(pos)
+    !(self[pos].nil?)
+  end
+
   def move(start, end_pos)
     piece = self[start]
     raise ArgumentError.new("No piece there") if piece.nil?
