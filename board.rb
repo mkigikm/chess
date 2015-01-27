@@ -1,3 +1,5 @@
+require 'colorize'
+
 require_relative 'piece.rb'
 require_relative 'sliding_piece.rb'
 require_relative 'stepping_piece.rb'
@@ -128,16 +130,21 @@ class Board
   def inspect
     board_str = " abcdefgh\n"
 
+    bgcolor = :light_red
+
     8.times do |row|
       board_str << (8 - row).to_s
-
+      bgcolor = bgcolor == :white ? :light_red : :white
+      
       8.times do |col|
         piece = self[[row, col]]
         if piece.nil?
-          board_str << "."
+          board_str << " ".colorize(:background => bgcolor)
         else
-          board_str << piece.render
+          board_str << piece.render.colorize(:background => bgcolor)
         end
+
+        bgcolor = bgcolor == :white ? :light_red : :white
       end
 
       board_str << "#{8 - row}\n"
