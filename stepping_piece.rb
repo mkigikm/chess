@@ -1,10 +1,17 @@
 require_relative 'piece.rb'
 
 class SteppingPiece < Piece
-  def initialize(color, pos, deltas)
+  DELTAS = {
+    king: [[0, 1], [1, 0], [0, -1], [-1, 0],
+    [1, 1], [1, -1], [-1, -1], [-1, 1]],
+    knight: [[2, 1], [2, -1], [1, 2], [1, -2],
+    [-2, 1], [-2, -1], [-1, 2], [-1, -2]]
+  }
+
+  def initialize(color, pos, type)
     super(color, pos)
 
-    @deltas = deltas
+    @deltas = DELTAS[type]
   end
 
   def moves
