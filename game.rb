@@ -1,7 +1,11 @@
 # encoding: utf-8
 
-require_relative 'piece.rb'
 require_relative 'board.rb'
+require_relative 'piece.rb'
+require_relative 'sliding_piece.rb'
+require_relative 'stepping_piece.rb'
+require_relative 'pawn.rb'
+
 
 class Game
 
@@ -29,4 +33,8 @@ class Game
     puts "(ノ ゜Д゜)ノ ︵ ┻━┻ ."
   end
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+  Game.new.run
 end

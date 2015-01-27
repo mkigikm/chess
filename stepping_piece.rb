@@ -1,7 +1,6 @@
 # encoding: utf-8
 
-require_relative 'piece.rb'
-require 'byebug'
+require_relative 'piece.rb' 
 
 class SteppingPiece < Piece
 

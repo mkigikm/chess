@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require_relative 'board.rb'
-require 'yaml'
 
 class Piece
 
