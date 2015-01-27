@@ -17,7 +17,7 @@ class SteppingPiece < Piece
 
   def moves
     new_poses = []
-    
+
     possible_pos = @deltas.collect do |delta|
       new_pos = [pos[0] + delta[0], pos[1] + delta[1]]
       if valid?(new_pos)
@@ -29,7 +29,7 @@ class SteppingPiece < Piece
   end
 
   def valid?(pos)
-    @board.in_bounds?(pos) && !@board.occupied?(pos)
+    @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
   end
 
 end
