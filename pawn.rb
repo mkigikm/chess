@@ -47,7 +47,6 @@ class Pawn < Piece
     end
 
     new_poses
-
   end
 
   def valid?(pos)

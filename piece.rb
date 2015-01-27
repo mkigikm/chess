@@ -1,4 +1,5 @@
 require_relative 'board.rb'
+require 'yaml'
 
 class Piece
 
@@ -20,8 +21,18 @@ class Piece
     raise NotImplementedError
   end
 
+  def move_into_check?(pos)
+    board_dup = YAML::load(@board.to_yaml)
+
+    board_dup.move!(@pos, pos)
+    board_dup.in_check?(color)
+  end
+
   def valid?(pos)
     @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
   end
 
+  def valid_moves
+    moves.reject { |pos| move_into_check?(pos) }
+  end
 end

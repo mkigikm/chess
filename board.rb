@@ -1,6 +1,22 @@
+require 'byebug'
+require_relative 'piece.rb'
+require_relative 'sliding_piece.rb'
+require_relative 'stepping_piece.rb'
+require_relative 'pawn.rb'
+
 class Board
 
-  attr_reader :grid
+  COLUMN_TRANSLATION = {
+    'a' => 0,
+    'b' => 1,
+    'c' => 2,
+    'd' => 3,
+    'e' => 4,
+    'f' => 5,
+    'g' => 6,
+    'h' => 7
+  }
+
 
   def self.standard_board
     board = Board.new
@@ -23,6 +39,15 @@ class Board
 
     board
   end
+
+  def self.translate(pos)
+    row = 8 - pos[1].to_i
+    col = COLUMN_TRANSLATION[pos[0]]
+
+    [row, col]
+  end
+
+  attr_reader :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8) {nil}}
@@ -52,10 +77,17 @@ class Board
     !self[pos].nil? && self[pos].color != color
   end
 
+  def user_move(start, end_pos)
+    start, end_pos = Board.translate(start), Board.translate(end_pos)
+    move(start, end_pos)
+  end
+
   def move(start, end_pos)
+    #debugger
     piece = self[start]
+
     raise ArgumentError.new("No piece there") if piece.nil?
-    if piece.moves.include?(end_pos)
+    if piece.valid_moves.include?(end_pos)
       self[start] = nil
       self[end_pos] = piece
       piece.pos = end_pos
@@ -68,6 +100,12 @@ class Board
     end
 
     nil
+  end
+
+  def move!(start, end_pos)
+    self[end_pos] = self[start]
+    self[start] = nil
+    self[end_pos].pos = end_pos
   end
 
   def inspect
@@ -90,7 +128,7 @@ class Board
   end
 
   def in_check?(color)
-    pieces = @grid.flatten
+    pieces = @grid.flatten.compact
 
     king = pieces.find do |piece|
       piece.type == :king && piece.color == color
