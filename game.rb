@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative 'piece.rb'
 require_relative 'board.rb'
 
@@ -23,6 +25,8 @@ class Game
       end
       @turn = @turn == :white ? :black : :white
     end
+
+    puts "(ノ ゜Д゜)ノ ︵ ┻━┻ ."
   end
 
 end

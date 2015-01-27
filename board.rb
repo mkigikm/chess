@@ -107,6 +107,18 @@ class Board
     nil
   end
 
+  def dup
+    duped = Board.new
+
+    all_pieces.each do |piece|
+      duped_piece = piece.dup
+      duped_piece.board = duped
+      duped[duped_piece.pos] = duped_piece
+    end
+
+    duped
+  end
+
   def move!(start, end_pos)
     self[end_pos] = self[start]
     self[start] = nil

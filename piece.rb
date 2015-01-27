@@ -1,10 +1,12 @@
+# encoding: utf-8
+
 require_relative 'board.rb'
 require 'yaml'
 
 class Piece
 
   attr_reader :color, :type
-  attr_accessor :pos
+  attr_accessor :pos, :board
 
   def initialize(color, pos, type, board)
     @color = color
@@ -19,7 +21,7 @@ class Piece
   end
 
   def move_into_check?(pos)
-    board_dup = YAML::load(@board.to_yaml)
+    board_dup = board.dup
 
     board_dup.move!(@pos, pos)
     board_dup.in_check?(color)
@@ -32,4 +34,6 @@ class Piece
   def valid_moves
     moves.reject { |pos| move_into_check?(pos) }
   end
+
+
 end
