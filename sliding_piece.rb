@@ -39,6 +39,7 @@ class SlidingPiece < Piece
         new_pos = [pos[0] + delta[0] * multiple, pos[1] + delta[1] * multiple]
         if valid?(new_pos)
           new_poses << new_pos
+
           if @board.occupied?(new_pos)
             break
           end
@@ -47,10 +48,6 @@ class SlidingPiece < Piece
     end
 
     new_poses
-  end
-
-  def valid?(pos)
-    @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
   end
 
 end

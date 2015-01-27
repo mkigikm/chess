@@ -18,4 +18,9 @@ class Piece
   def moves
     raise NotImplementedError
   end
+
+  def valid?(pos)
+    @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
+  end
+  
 end

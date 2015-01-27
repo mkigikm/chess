@@ -42,11 +42,4 @@ class SteppingPiece < Piece
     new_poses
   end
 
-  def valid?(pos)
-    @board.in_bounds?(pos) && @board.can_move_into?(color, pos)
-  end
-
-  def render
-    if
-
 end

@@ -37,6 +37,7 @@ class Board
       self[start] = nil
       self[end_pos] = piece
       piece.pos = end_pos
+
       if piece.class == Pawn
         piece.can_move_twice = false
       end
@@ -59,6 +60,7 @@ class Board
           board_str << piece.render
         end
       end
+      
       board_str << "\n"
     end
 
