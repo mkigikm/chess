@@ -128,20 +128,20 @@ class Board
   end
 
   def inspect
-    board_str = " abcdefgh\n"
+    board_str = "  a  b  c  d  e  f  g  h\n"
 
     bgcolor = :light_red
 
     8.times do |row|
       board_str << (8 - row).to_s
       bgcolor = bgcolor == :white ? :light_red : :white
-      
+
       8.times do |col|
         piece = self[[row, col]]
         if piece.nil?
-          board_str << " ".colorize(:background => bgcolor)
+          board_str << "   ".colorize(:background => bgcolor)
         else
-          board_str << piece.render.colorize(:background => bgcolor)
+          board_str << " #{piece.render} ".colorize(:background => bgcolor)
         end
 
         bgcolor = bgcolor == :white ? :light_red : :white
@@ -150,7 +150,7 @@ class Board
       board_str << "#{8 - row}\n"
     end
 
-    board_str << " abcdefgh\n"
+    board_str << "  a  b  c  d  e  f  g  h\n"
     board_str
   end
 
