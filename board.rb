@@ -41,6 +41,10 @@ class Board
   end
 
   def self.translate(pos)
+    if !(/^[a-h][1-8]$/ =~ pos)
+      raise ArgumentError.new("Invalid coordinates")
+    end
+    
     row = 8 - pos[1].to_i
     col = COLUMN_TRANSLATION[pos[0]]
 
@@ -77,8 +81,12 @@ class Board
     !self[pos].nil? && self[pos].color != color
   end
 
-  def user_move(start, end_pos)
+  def user_move(start, end_pos, turn_color)
     start, end_pos = Board.translate(start), Board.translate(end_pos)
+    if self[start].color != turn_color
+      raise ArgumentError.new("Not your piece.")
+    end
+
     move(start, end_pos)
   end
 
@@ -143,7 +151,7 @@ class Board
     end
   end
 
-  def checkmate?(color)
+  def over?(color)
     pieces = all_pieces.select { |piece| piece.color == color}
 
 
@@ -152,5 +160,8 @@ class Board
     end
   end
 
+  def checkmate?(color)
+    over?(color) && in_check?(color)
+  end
 
 end
