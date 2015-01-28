@@ -14,17 +14,21 @@ class Computer
     send(@eval_method)
   end
 
+  def other_color(color)
+    color == :white ? :black : :white
+  end
+
   def make_move(input, color)
     puts "#{Board.parse(input[0])}, #{Board.parse(input[1])}"
     @board.move(input[0], input[1], :queen)
   end
 
-  def controlled_pieces
-    @board.all_pieces.select {|piece| piece.color == color}
+  def controlled_pieces(board, current_color)
+    board.all_pieces.select {|piece| piece.color == current_color}
   end
 
   def random
-    valid_pieces = controlled_pieces.select do |piece|
+    valid_pieces = controlled_pieces(@board, @color).select do |piece|
       !piece.valid_moves.empty?
     end
 
@@ -35,15 +39,44 @@ class Computer
     [start, end_pos]
   end
 
-  def evaluate_ai_move
+  def evaluate_ai_move(board=@board, eval_color=@color)
     max_score = -OVER_9000**2
     best_move = nil
 
-    controlled_pieces.each do |piece|
+    controlled_pieces(board, eval_color).each do |piece|
       piece.valid_moves.each do |move|
         duped = board.dup
         duped.move(piece.pos, move)
-        score = evaluate_board(duped)
+        score = evaluate_board(duped, eval_color)
+
+        if score > max_score
+          best_move = [piece.pos, move]
+          max_score = score
+        end
+      end
+    end
+
+    best_move
+  end
+
+  def evaluate_ai_deeper
+    max_score = -OVER_9000
+    best_move = nil
+
+    controlled_pieces(@board, @color).each do |piece|
+      piece.valid_moves.each do |move|
+        duped = board.dup
+        duped.move(piece.pos, move)
+
+        if duped.checkmate?(other_color(color))
+          return [piece.pos, move]
+        elsif !duped.over?(other_color(color))
+          best_opponent_move = evaluate_ai_move(duped, other_color(color))
+          duped.move(*best_opponent_move)
+          score = evaluate_board(duped, color)
+        else
+          score = 0
+        end
 
         if score > max_score
           best_move = [piece.pos, move]
@@ -140,15 +173,16 @@ class Computer
     -0.5
   end
 
-  def evaluate_board(board)
-    other_color = color == :white ? :black : :white
-
-    if board.checkmate?(other_color)
+  def evaluate_board(board, eval_color)
+    if board.checkmate?(other_color(eval_color))
       return OVER_9000
+    elsif board.checkmate?(eval_color)
+      return -OVER_9000
     end
 
     score = evaluate_pieces(board)
-    #score += 50 if board.in_check?(other_color)
-    score + evaluate_pawns(board)
+    #score += 50 if board.in_check?(other_color(eval_color))
+    score += evaluate_pawns(board)
+    eval_color == color ? score : -score
   end
 end

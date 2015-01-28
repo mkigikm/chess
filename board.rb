@@ -58,6 +58,18 @@ class Board
     board
   end
 
+  def self.ai_test_board
+    board = Board.new
+
+    Rook.new(:black, [0,0], board)
+    Rook.new(:black, [0,6]  , board)
+    SlidingPiece.new(:white,[2,0] , :queen, board)
+    SlidingPiece.new(:black, [2,1], :bishop, board)
+    King.new(:black, [0,7], board)
+    King.new(:white, [7,7], board)
+    board
+  end
+
   def self.load_board(board_file)
     board_str = File.read(board_file)
     rows = board_str.split("\n")
