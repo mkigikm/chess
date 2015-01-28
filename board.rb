@@ -42,6 +42,17 @@ class Board
     board
   end
 
+  def self.kings_board
+    board = Board.new
+
+    King.new(:black, [4,4], board)
+    King.new(:white, [4,6], board)
+
+    Pawn.new(:white, [4,0], board)
+
+    board
+  end
+
   def self.castle_board
     board = Board.new
 
@@ -251,10 +262,20 @@ class Board
       piece.type == :king && piece.color == color
     end
 
-    pieces.reject! {|piece| piece.is_a?(King) and piece.color != color}
-    pieces.any? do |piece|
+    opposing_king = pieces.find do |piece|
+      piece.type == :king && piece.color != color
+    end
+
+    castle = opposing_king.castle_rights
+    opposing_king.castle_rights = false
+
+    in_check = pieces.any? do |piece|
       piece.color != color && piece.moves.include?(king.pos)
     end
+
+    opposing_king.castle_rights = castle
+
+    in_check
   end
 
   def over?(color)
