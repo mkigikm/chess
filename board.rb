@@ -266,15 +266,18 @@ class Board
       piece.type == :king && piece.color != color
     end
 
-    castle = opposing_king.castle_rights
-    opposing_king.castle_rights = false
+    unless opposing_king.nil?
+      castle = opposing_king.castle_rights
+      opposing_king.castle_rights = false
+    end
 
     in_check = pieces.any? do |piece|
       piece.color != color && piece.moves.include?(king.pos)
     end
 
-    opposing_king.castle_rights = castle
-
+    unless opposing_king.nil?
+      opposing_king.castle_rights = castle
+    end
     in_check
   end
 

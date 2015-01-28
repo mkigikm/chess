@@ -29,7 +29,7 @@ class Computer
   end
 
   def random
-    sleep(1)
+    #sleep(1)
     valid_pieces = controlled_pieces(@board, @color).select do |piece|
       !piece.valid_moves.empty?
     end
