@@ -15,7 +15,6 @@ class Pawn < Piece
   }
 
   attr_reader :render
-  attr_accessor :can_move_twice
 
   def initialize(color, pos, board)
     super(color, pos, :pawn, board)
@@ -33,7 +32,7 @@ class Pawn < Piece
 
   def can_move_twice?
     (color == :black && pos[0] == 1) ||
-      (color == :white && pos[1] == 1)
+      (color == :white && pos[0] == 6)
   end
 
   def moves

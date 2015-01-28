@@ -3,6 +3,8 @@ require 'colorize'
 require_relative 'piece.rb'
 require_relative 'sliding_piece.rb'
 require_relative 'stepping_piece.rb'
+require_relative 'king.rb'
+require_relative 'rook.rb'
 require_relative 'pawn.rb'
 require_relative 'chess_error'
 
@@ -22,19 +24,32 @@ class Board
     board = Board.new
 
     [[:white, 7], [:black, 0]].each do |(color, row)|
-      SlidingPiece.new(color,  [row, 0], :rook, board)
-      SlidingPiece.new(color,  [row, 7], :rook, board)
+      Rook.new(color,  [row, 0], board)
+      Rook.new(color,  [row, 7], board)
       SteppingPiece.new(color, [row, 1], :knight, board)
       SteppingPiece.new(color, [row, 6], :knight, board)
       SlidingPiece.new(color,  [row, 2], :bishop, board)
       SlidingPiece.new(color,  [row, 5], :bishop, board)
       SlidingPiece.new(color,  [row, 3], :queen, board)
-      SteppingPiece.new(color, [row, 4], :king, board)
+      King.new(color, [row, 4], board)
     end
 
     8.times do |col|
       Pawn.new(:black, [1, col], board)
       Pawn.new(:white, [6, col], board)
+    end
+
+    board
+  end
+
+  def self.castle_board
+    board = Board.new
+
+    [[:white, 7], [:black, 0]].each do |(color, row)|
+      Rook.new(color,  [row, 0], board)
+      Rook.new(color,  [row, 7], board)
+      SlidingPiece.new(color,  [row, 3], :queen, board)
+      King.new(color, [row, 4], board)
     end
 
     board
@@ -114,16 +129,38 @@ class Board
 
     raise ChessError.new("No piece there") if piece.nil?
     if piece.valid_moves.include?(end_pos)
-      move!(start, end_pos)
-
-      if piece.is_a?(Pawn)
-        piece.can_move_twice = false
+      if piece.is_a?(King) && (end_pos[1] - start[1]).abs != 1
+        castle_move!(start, end_pos)
+      else
+        move!(start, end_pos)
       end
     else
       raise ChessError.new("Can't move there")
     end
 
     nil
+  end
+
+  def castle_move!(king_pos, end_pos)
+    king = self[king_pos]
+
+    if end_pos[1] == 6
+      rook_pos = [king_pos[0], 7]
+    else
+      rook_pos = [king_pos[0], 0]
+    end
+    rook = self[rook_pos]
+
+    if rook_pos[1] == 7 # king side castle
+      king_end_pos = [king_pos[0], king_pos[1] + 2]
+      rook_end_pos = [rook_pos[0], rook_pos[1] - 2]
+    else
+      king_end_pos = [king_pos[0], king_pos[1] - 2]
+      rook_end_pos = [rook_pos[0], rook_pos[1] + 3]
+    end
+
+    move!(king_pos, king_end_pos)
+    move!(rook_pos, rook_end_pos)
   end
 
   def dup
@@ -150,9 +187,9 @@ class Board
       8.times do |col|
         piece = self[[row, col]]
         if piece.nil?
-          board_str << " ".colorize(:background => bgcolor)
+          board_str << "   ".colorize(:background => bgcolor)
         else
-          board_str << "#{piece.render}".colorize(:background => bgcolor)
+          board_str << " #{piece.render} ".colorize(:background => bgcolor)
         end
 
         bgcolor = bgcolor == :white ? :light_red : :white

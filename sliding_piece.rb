@@ -11,7 +11,7 @@ class SlidingPiece < Piece
     rook: [[1, 0], [0, 1], [-1, 0], [0, -1]]
   }
 
-  attr_reader :render
+  attr_reader :render, :castle_rights
 
   def initialize(color, pos, type, board)
     super
@@ -30,6 +30,10 @@ class SlidingPiece < Piece
       @render = "♖"
     else
       @render = "♜"
+    end
+
+    if type == :rook
+      @castle_rights = true
     end
   end
 

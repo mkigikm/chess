@@ -26,6 +26,10 @@ class SteppingPiece < Piece
     else
       @render = "♞"
     end
+
+    if type == :king
+      @castle_rights = true
+    end
   end
 
   def moves
@@ -37,6 +41,7 @@ class SteppingPiece < Piece
         new_poses << new_pos
       end
     end
+    
 
     new_poses
   end
