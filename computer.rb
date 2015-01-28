@@ -15,7 +15,7 @@ class Computer
   end
 
   def make_move(input, color)
-    p input
+    puts "#{Board.parse(input[0])}, #{Board.parse(input[1])}"
     @board.move(input[0], input[1], :queen)
   end
 
@@ -36,7 +36,7 @@ class Computer
   end
 
   def evaluate_ai_move
-    max_score = -OVER_9000
+    max_score = -OVER_9000**2
     best_move = nil
 
     controlled_pieces.each do |piece|
@@ -60,12 +60,12 @@ class Computer
 
     board.all_pieces.each do |piece|
       material_value = case piece.type
-      when :queen then 9
-      when :rook then 5
-      when :bishop then 3
-      when :knight then 3
-      when :pawn then 1
-      when :king then 200
+      when :queen then 9.0
+      when :rook then 5.0
+      when :bishop then 3.0
+      when :knight then 3.0
+      when :pawn then 1.0
+      when :king then 200.0
       end
 
       movement_value = piece.moves.count * 0.1

@@ -98,6 +98,15 @@ class Board
     [row, col]
   end
 
+  def self.parse(pos)
+    row, col = pos
+
+    col = COLUMN_TRANSLATION.invert[col]
+    row = 8 - row
+
+    "#{col}#{row}"
+  end
+
   attr_reader :grid
 
   def initialize
@@ -122,7 +131,7 @@ class Board
     when 'R' then promotion_rank = :rook
     end
 
-    if self[start].color != turn_color
+    if self[start].nil? || self[start].color != turn_color
       raise ChessError.new("Not your piece.")
     end
 
