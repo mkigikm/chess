@@ -10,7 +10,7 @@ class Computer
 
   def make_move(input, color)
     p input
-    @board.move(input[0], input[1])
+    @board.move(input[0], input[1], :queen)
   end
 
   def controlled_pieces

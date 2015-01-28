@@ -121,7 +121,7 @@ class Board
     when 'B' then promotion_rank = :bishop
     when 'R' then promotion_rank = :rook
     end
-    
+
     if self[start].color != turn_color
       raise ChessError.new("Not your piece.")
     end
@@ -140,7 +140,7 @@ class Board
 
     raise ChessError.new("No piece there") if piece.nil?
     if piece.valid_moves.include?(end_pos)
-      if piece.is_a?(King) && (end_pos[1] - start[1]).abs != 1
+      if piece.is_a?(King) && piece.castle_rights && (end_pos[1] - start[1]).abs != 1
         castle_move!(start, end_pos)
       else
         move!(start, end_pos)

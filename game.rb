@@ -13,7 +13,7 @@ require_relative 'chess_error.rb'
 class Game
 
   def initialize(white_player, black_player)
-    @board = Board.castle_board#standard_board
+    @board = Board.standard_board
     @turn = :white
 
     @white_player = white_player
@@ -40,6 +40,7 @@ class Game
       @turn = @turn == :white ? :black : :white
     end
 
+    puts @board.inspect
     if @board.checkmate?(:white)
       puts "This is the white player (ノ ゜Д゜)ノ ︵ ┻━┻ ."
     elsif @board.checkmate?(:black)
