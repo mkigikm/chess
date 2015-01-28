@@ -13,7 +13,7 @@ require_relative 'chess_error.rb'
 class Game
 
   def initialize(white_player, black_player)
-    @board = Board.standard_board
+    @board = Board.castle_board#standard_board
     @turn = :white
 
     @white_player = white_player

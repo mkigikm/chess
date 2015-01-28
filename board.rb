@@ -52,6 +52,9 @@ class Board
       King.new(color, [row, 4], board)
     end
 
+    Pawn.new(:white, [1,1], board)
+    Pawn.new(:black, [6,1], board)
+
     board
   end
 
@@ -85,7 +88,7 @@ class Board
   end
 
   def self.translate(pos)
-    if !(/^[a-h][1-8]$/ =~ pos)
+    if !(/^[a-h][1-8][QNBR]?$/ =~ pos)
       raise ChessError.new("Invalid coordinates")
     end
 
@@ -109,13 +112,21 @@ class Board
     @grid[pos[0]][pos[1]]
   end
 
-  def user_move(start, end_pos, turn_color)
+  def user_move(start, end_pos, promotion_rank, turn_color)
     start, end_pos = Board.translate(start), Board.translate(end_pos)
+
+    case promotion_rank
+    when 'Q' then promotion_rank = :queen
+    when 'N' then promotion_rank = :knight
+    when 'B' then promotion_rank = :bishop
+    when 'R' then promotion_rank = :rook
+    end
+    
     if self[start].color != turn_color
       raise ChessError.new("Not your piece.")
     end
 
-    move(start, end_pos)
+    move(start, end_pos, promotion_rank)
   end
 
   def move!(start, end_pos)
@@ -124,7 +135,7 @@ class Board
     self[end_pos].pos = end_pos
   end
 
-  def move(start, end_pos)
+  def move(start, end_pos, promotion_rank=nil)
     piece = self[start]
 
     raise ChessError.new("No piece there") if piece.nil?
@@ -136,6 +147,14 @@ class Board
       end
     else
       raise ChessError.new("Can't move there")
+    end
+
+    if piece.is_a?(King) || piece.is_a?(Rook)
+      piece.castle_rights = false
+    end
+
+    if piece.is_a?(Pawn) && [0, 7].include?(piece.pos[0])
+      piece.promote(promotion_rank)
     end
 
     nil

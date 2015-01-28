@@ -1,6 +1,9 @@
 # encoding: utf-8
 
 require_relative 'piece.rb'
+require_relative 'stepping_piece.rb'
+require_relative 'sliding_piece.rb'
+require_relative 'rook.rb'
 
 class Pawn < Piece
 
@@ -54,6 +57,15 @@ class Pawn < Piece
     end
 
     new_poses
+  end
+
+  def promote(promotion_rank)
+    case promotion_rank
+    when :queen then SlidingPiece.new(color, pos, :queen, board)
+    when :rook then Rook.new(color, pos, board)
+    when :bishop then SlidingPiece.new(color, pos, :bishop, board)
+    when :knight then SteppingPiece.new(color, pos, :knight, board)
+    end
   end
 
   protected
