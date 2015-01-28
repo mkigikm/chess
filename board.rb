@@ -52,6 +52,8 @@ class Board
       King.new(color, [row, 4], board)
     end
 
+    Rook.new(:black, [1, 4], board)
+
     Pawn.new(:white, [1,1], board)
     Pawn.new(:black, [6,1], board)
 
@@ -249,6 +251,7 @@ class Board
       piece.type == :king && piece.color == color
     end
 
+    pieces.reject! {|piece| piece.is_a?(King) and piece.color != color}
     pieces.any? do |piece|
       piece.color != color && piece.moves.include?(king.pos)
     end

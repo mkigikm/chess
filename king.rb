@@ -13,7 +13,7 @@ class King < SteppingPiece
   def moves
     new_poses = super
 
-    if castle_rights
+    if castle_rights && !board.in_check?(color)
       rook_king_side = board[[pos[0], pos[1] + 3]]
       rook_queen_side = board[[pos[0], pos[1] - 4]]
 

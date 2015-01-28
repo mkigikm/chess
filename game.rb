@@ -28,6 +28,9 @@ class Game
     current_player = @white_player
     until @board.over?(@turn)
       puts @board.inspect
+      if @board.in_check?(@turn)
+        puts "#{@turn.to_s.capitalize} player is currently in check."
+      end
       begin
         input = current_player.get_move
         current_player.make_move(input, @turn)
