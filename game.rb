@@ -58,7 +58,13 @@ if __FILE__ == $PROGRAM_NAME
   if input[0] == 'y'
     player1 = Human.new
   else
-    player1 = Computer.new
+    puts 'Random or "smart"?'
+    input = gets.chomp.downcase
+    if input[0] == 'r'
+      player1 = Computer.new(:random)
+    else
+      player1 = Computer.new(:evaluate_ai_move)
+    end
   end
 
   puts 'Is black player a human?'
@@ -66,7 +72,14 @@ if __FILE__ == $PROGRAM_NAME
   if input[0] == 'y'
     player2 = Human.new
   else
-    player2 = Computer.new
+    puts 'Random or "smart"?'
+    input = gets.chomp.downcase
+    if input[0] == 'r'
+      player2 = Computer.new(:random)
+    else
+      player2 = Computer.new(:evaluate_ai_move)
+    end
   end
+
   Game.new(player1, player2).run
 end

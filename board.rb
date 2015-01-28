@@ -135,12 +135,12 @@ class Board
     self[end_pos].pos = end_pos
   end
 
-  def move(start, end_pos, promotion_rank=nil)
+  def move(start, end_pos, promotion_rank=:queen)
     piece = self[start]
 
     raise ChessError.new("No piece there") if piece.nil?
     if piece.valid_moves.include?(end_pos)
-      if piece.is_a?(King) && piece.castle_rights && (end_pos[1] - start[1]).abs != 1
+      if piece.is_a?(King) && piece.castle_rights && (end_pos[1] - start[1]).abs > 1
         castle_move!(start, end_pos)
       else
         move!(start, end_pos)

@@ -6,8 +6,12 @@ class Computer
 
   attr_accessor :board, :color
 
+  def initialize(eval_method)
+    @eval_method = eval_method
+  end
+
   def get_move
-    evaluate_ai_move
+    send(@eval_method)
   end
 
   def make_move(input, color)
@@ -61,7 +65,7 @@ class Computer
       when :bishop then 3
       when :knight then 3
       when :pawn then 1
-      when :king then 0
+      when :king then 200
       end
 
       movement_value = piece.moves.count * 0.1
@@ -144,6 +148,7 @@ class Computer
     end
 
     score = evaluate_pieces(board)
+    #score += 50 if board.in_check?(other_color)
     score + evaluate_pawns(board)
   end
 end
