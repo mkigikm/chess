@@ -239,7 +239,7 @@ class Board
 
     pieces.all? do |piece|
       piece.valid_moves.empty?
-    end
+    end || all_pieces.count == 2
   end
 
   def checkmate?(color)
