@@ -53,22 +53,22 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  puts 'For the white player choose (h)uman, (r)andom, "(s)mart", or "(b)rilliant"?'
+  puts 'For the white player choose (h)uman, (r)andom, "(s)mart", or "(g)randmaster"?'
   input = gets.chomp.downcase
   case input[0]
   when 'h' then player1 = Human.new
   when 'r' then player1 = Computer.new(:random)
   when 's' then player1 = Computer.new(:evaluate_ai_move)
-  when 'b' then player1 = Computer.new(:evaluate_ai_deeper)
+  when 'g' then player1 = Computer.new(:evaluate_ai_deeper)
   end
 
-  puts 'For the black player choose (h)uman, (r)andom, "(s)mart", or "(b)rilliant"?'
+  puts 'For the black player choose (h)uman, (r)andom, "(s)mart", or "(g)randmaster"?'
   input = gets.chomp.downcase
   case input[0]
   when 'h' then player2 = Human.new
   when 'r' then player2 = Computer.new(:random)
   when 's' then player2 = Computer.new(:evaluate_ai_move)
-  when 'b' then player2 = Computer.new(:evaluate_ai_deeper)
+  when 'g' then player2 = Computer.new(:evaluate_ai_deeper)
   end
 
   Game.new(player1, player2).run
