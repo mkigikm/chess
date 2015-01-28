@@ -4,6 +4,7 @@ require 'byebug'
 class Computer
   OVER_9000 = 9_001
 
+  #BOARD_POS
   attr_accessor :board, :color
 
   def initialize(eval_method)
@@ -85,7 +86,11 @@ class Computer
       end
     end
 
-    best_move
+    if best_move.nil?
+      random
+    else
+      best_move
+    end
   end
 
   def evaluate_pieces(board)
@@ -101,7 +106,20 @@ class Computer
       when :king then 200.0
       end
 
-      movement_value = piece.moves.count * 0.1
+      if piece.type == :queen
+        movement_value = (piece.moves.count) * 0.06
+      elsif piece.type == :pawn && piece.color == :white
+        movement_value = (8 - piece.pos[0]) * 0.175
+      elsif piece.type == :pawn && piece.color == :black
+        movement_value = piece.pos[0] * 0.175
+      else
+        movement_value = piece.moves.count * 0.1
+      end
+
+      if piece.type == :knight && piece.pos[0].between?(2,5)
+        movement_value += 0.8
+      end
+
       if piece.color == color
         score += material_value + movement_value
       else
