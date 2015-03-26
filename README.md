@@ -4,7 +4,7 @@
 A terminal implementation of chess with a basic AI. Humans can play each other,
 play an AI, or watch AIs play.
 
-## Design choices
+## Design Choices
 * uses inheritance to DRY up movement logic
 * to check for legal moves, check, checkmate, etc. the board is duped, then
   movements are made on the duped board.
