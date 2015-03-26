@@ -17,7 +17,7 @@ play an AI, or watch AIs play.
 * allows for board positions to be entered with a string to resume a game
 
 ## Libraries
-The only dependencies are ruby and the `colorize` gem.
+The only dependencies are Ruby and the `colorize` gem.
 
 ## How to Run
 To run, download the repository, `bundle install` if you don't already have the
