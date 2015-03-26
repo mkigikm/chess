@@ -13,7 +13,7 @@ play an AI, or watch AIs play.
   * "smart" looks for material advantage
   * "grandmaster" looks at responses to its move
 * board evaluations are made using the function given by
-  (http://www.pi.infn.it/~carosi/chess/shannon.txt)[(Shannon, 1950)].
+  [(Shannon, 1950)](http://www.pi.infn.it/~carosi/chess/shannon.txt).
 * allows for board positions to be entered with a string to resume a game
 
 ## Libraries
