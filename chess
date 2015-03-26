@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative 'game'
+require_relative 'lib/game'
 
 if __FILE__ == $PROGRAM_NAME
   puts 'For the white player choose (h)uman, (r)andom, "(s)mart", or "(g)randmaster"?'

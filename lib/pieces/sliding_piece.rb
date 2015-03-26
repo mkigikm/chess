@@ -3,7 +3,6 @@
 require_relative 'piece.rb'
 
 class SlidingPiece < Piece
-
   DELTAS = {
     queen: [[0, 1], [1, 0], [0, -1], [-1, 0],
     [1, 1], [1, -1], [-1, -1], [-1, 1]],
@@ -55,5 +54,4 @@ class SlidingPiece < Piece
 
     new_poses
   end
-
 end

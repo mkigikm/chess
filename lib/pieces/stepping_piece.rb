@@ -3,7 +3,6 @@
 require_relative 'piece.rb'
 
 class SteppingPiece < Piece
-
   DELTAS = {
     king: [[0, 1], [1, 0], [0, -1], [-1, 0],
     [1, 1], [1, -1], [-1, -1], [-1, 1]],
@@ -41,9 +40,7 @@ class SteppingPiece < Piece
         new_poses << new_pos
       end
     end
-    
 
     new_poses
   end
-
 end

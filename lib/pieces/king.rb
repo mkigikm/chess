@@ -1,7 +1,6 @@
 require_relative 'stepping_piece'
 
 class King < SteppingPiece
-
   attr_accessor :castle_rights
 
   def initialize(color, pos, board)

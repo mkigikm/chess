@@ -6,7 +6,6 @@ require_relative 'sliding_piece.rb'
 require_relative 'rook.rb'
 
 class Pawn < Piece
-
   DELTA = {
     white: [-1, 0],
     black: [1, 0]
@@ -72,5 +71,4 @@ class Pawn < Piece
   def attacking_valid?(pos)
     @board.in_bounds?(pos) && @board.occupied_by_other_color?(pos, color)
   end
-
 end

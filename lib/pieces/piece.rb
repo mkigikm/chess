@@ -1,8 +1,6 @@
 # encoding: utf-8
-#require 'yaml'
 
 class Piece
-
   attr_reader :color, :type
   attr_accessor :pos, :board
 

@@ -1,16 +1,15 @@
 # encoding: utf-8
 
-require_relative 'board.rb'
-require_relative 'piece.rb'
-require_relative 'sliding_piece.rb'
-require_relative 'stepping_piece.rb'
-require_relative 'pawn.rb'
-require_relative 'human.rb'
-require_relative 'computer.rb'
-require_relative 'chess_error.rb'
+require_relative 'pieces/piece'
+require_relative 'pieces/sliding_piece'
+require_relative 'pieces/stepping_piece'
+require_relative 'pieces/pawn'
+require_relative 'players/human'
+require_relative 'players/computer'
+require_relative 'board'
+require_relative 'chess_error'
 
 class Game
-
   def initialize(white_player, black_player)
     @board = Board.standard_board
     @turn = :white
@@ -51,5 +50,4 @@ class Game
       puts "wow, a tie"
     end
   end
-
 end

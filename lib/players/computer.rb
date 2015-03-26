@@ -1,5 +1,4 @@
-require_relative 'board'
-require 'byebug'
+require_relative '../board'
 
 class Computer
   OVER_9000 = 9_001
@@ -29,7 +28,6 @@ class Computer
   end
 
   def random
-    #sleep(1)
     valid_pieces = controlled_pieces(@board, @color).select do |piece|
       !piece.valid_moves.empty?
     end
@@ -200,7 +198,6 @@ class Computer
     end
 
     score = evaluate_pieces(board)
-    #score += 50 if board.in_check?(other_color(eval_color))
     score += evaluate_pawns(board)
     eval_color == color ? score : -score
   end
